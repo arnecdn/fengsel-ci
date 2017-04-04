@@ -1,0 +1,33 @@
+version: '2'
+services:
+ jenkins:
+  image: jenkins:2.46.1-alpine
+  ports:
+  - "8080:8080" 
+  volumes:
+  - /home/arne:/var/jenkins_home jenkins
+  networks: 
+  - jenkins-nw
+ sonar:
+  image: sonarqube:alpine
+  ports:
+  - "9000:9000"
+  networks: 
+  - sonar-nw
+ gitlab:
+  image: gitlab/gitlab-ce:latest
+  ports:
+  - "80:80"
+  volumes:
+  - /srv/gitlab/config:/etc/gitlab 
+  - /srv/gitlab/logs:/var/log/gitlab
+  - /srv/gitlab/data:/var/opt/gitlab
+  networks: 
+  - gitlab-nw
+networks:
+ gitlab-nw:
+  driver: bridge
+ sonar-nw:
+  driver: bridge
+ jenkins-nw:
+  driver: bridge
